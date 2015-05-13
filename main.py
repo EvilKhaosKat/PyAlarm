@@ -1,97 +1,95 @@
-import time
+import os
+
+import sys
+from PyQt4 import QtGui
+
 from threading import Timer
 
 
-def print_time():
-    print "From print_time", time.time()
+class PyAlarm():
+    timer = None
+
+    @staticmethod
+    def stop_timer():
+        if PyAlarm.timer is not None:
+            PyAlarm.timer.cancel()
+
+    @staticmethod
+    def init_timer(time_in_seconds):
+        PyAlarm.stop_timer()
+
+        PyAlarm.timer = Timer(time_in_seconds, PyAlarm.timer_expired, ())
+        PyAlarm.timer.start()
+
+    @staticmethod
+    def timer_expired():
+        #TODO configuration for notification method, and error handling - OS without notify-send
+        os.system("notify-send 'Timer expired.'")
+
+        #TODO easier method to play sound
+        import pygame
+
+        pygame.init()
+        # notify_sound_name = 'notify_sound.wav'
+        song = pygame.mixer.Sound("Mallet.ogg")
+        song.play()
+
+    @staticmethod
+    def exit():
+        PyAlarm.stop_timer()
+        sys.exit(0)
 
 
-def print_some_times():
-    print time.time()
-    Timer(5, print_time, ()).start()
-    Timer(10, print_time, ()).start()
-    time.sleep(11)  # sleep while time-delay events execute
-    print time.time()
+#TODO gui configuration of time for alarm clock
+class SystemTrayIcon(QtGui.QSystemTrayIcon):
+    def __init__(self, icon, parent=None):
+        QtGui.QSystemTrayIcon.__init__(self, icon, parent)
+        self.menu = QtGui.QMenu(parent)
+
+        in_10_sec_action = self.menu.addAction("In 00:00:10")
+        in_10_sec_action.triggered.connect(lambda: PyAlarm.init_timer(10))
+
+        in_half_min_action = self.menu.addAction("In 00:00:30")
+        in_half_min_action.triggered.connect(lambda: PyAlarm.init_timer(30))
+
+        self.menu.addSeparator()
+
+        # TODO timers presets to be configurable
+        in_1_min_action = self.menu.addAction("In 00:01:00")
+        in_1_min_action.triggered.connect(lambda: PyAlarm.init_timer(60))
+
+        in_2_min_action = self.menu.addAction("In 00:02:00")
+        in_2_min_action.triggered.connect(lambda: PyAlarm.init_timer(120))
+
+        in_3_min_action = self.menu.addAction("In 00:03:00")
+        in_3_min_action.triggered.connect(lambda: PyAlarm.init_timer(180))
+
+        in_5_min_action = self.menu.addAction("In 00:05:00")
+        in_5_min_action.triggered.connect(lambda: PyAlarm.init_timer(300))
+
+        in_7_min_action = self.menu.addAction("In 00:07:00")
+        in_7_min_action.triggered.connect(lambda: PyAlarm.init_timer(420))
+
+        self.menu.addSeparator()
+
+        exit_action = self.menu.addAction("Exit")
+        exit_action.triggered.connect(lambda: PyAlarm.exit())
+
+        self.setContextMenu(self.menu)
 
 
-#print_some_times()
+def main():
+    app = QtGui.QApplication(sys.argv)
+    # style = app.style()
+    icon = QtGui.QIcon("Icon.png")
+    # QtGui.QIcon(style.standardPixmap(QtGui.QStyle.SP_ComputerIcon))
+    # QtGui.QIcon.fromTheme("timer")
 
-import sys
-from PyQt4 import QtGui, QtCore
+    trayIcon = SystemTrayIcon(icon)
 
-class WithQuitButton(QtGui.QWidget):
-    def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
-
-        self.setGeometry(300, 300, 220, 100)
-        self.setWindowTitle(self.trUtf8('Window with button'))
-
-        quit = QtGui.QPushButton(self.trUtf8('Exit!'), self)
-        quit.setGeometry(100, 90, 60, 35)
-
-        main_font = QtGui.QFont(self)
-        main_font.setBold(True)
-        main_font.setPixelSize(42)
+    trayIcon.show()
+    sys.exit(app.exec_())
 
 
-        label_hours = QtGui.QLabel(self)
-        label_hours.setText("00")
-        label_hours.setGeometry(10, 00, 60, 50)
-        label_hours.setFont(main_font)
-
-        # label_first_delim = QtGui.QLabel(self)
-        # label_first_delim.setText(":")
-        # label_first_delim.setGeometry(40, 10, 10, 10)
-        # label_first_delim.setFont(main_font)
-
-        label_minutes = QtGui.QLabel(self)
-        label_minutes.setText("00")
-        label_minutes.setGeometry(80, 0, 60, 50)
-        label_minutes.setFont(main_font)
-
-        label_seconds = QtGui.QLabel(self)
-        label_seconds.setText("00")
-        label_seconds.setGeometry(150, 0, 60, 50)
-        label_seconds.setFont(main_font)
-
-        #QtCore.SLOT('quit()')
-        #self.connect(quit, QtCore.SIGNAL('clicked()'),
-        #             QtGui.qApp, self.wrapper)
-
-        quit.clicked.connect(self.test)
-
-
-    def wrapper(self):
-        self.test()
-
-    def test(self):
-        self.setWindowTitle("TEST!!!!")
-
-# import pyglet
-# song = pyglet.media.load('notify_sound.wav')
-# song.play()
-# pyglet.app.run()
-# pyglet.app.exit()
-
-#notify-send "Hello world!"
-
-
-import pygame
-pygame.init()
-wav = 'notify_sound.wav'
-song = pygame.mixer.Sound("Mallet.ogg")
-clock = pygame.time.Clock()
-#song.play()
-#while True:
-#    clock.tick(60)
-#pygame.quit()
-
-
-app = QtGui.QApplication(sys.argv)
-qb = WithQuitButton()
-qb.show()
-#song.play()
-sys.exit(app.exec_())
-
-
-#time.sleep(1000)
+if __name__ == '__main__':
+    main()
