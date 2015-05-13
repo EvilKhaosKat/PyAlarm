@@ -9,4 +9,4 @@ Simple alarm clock app with seconds precision
 python main.py
 
 ### p.s. 
-Mallet.ogg is from ubuntu notifications collection of sounds
+Mallet.ogg was taken from ubuntu notifications collection of sounds
