@@ -7,3 +7,6 @@ Simple alarm clock app with seconds precision
 
 ##Using:
 python main.py
+
+### p.s. 
+Mallet.ogg is from ubuntu notifications collection of sounds
