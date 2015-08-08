@@ -31,7 +31,7 @@ class PyAlarm():
 
         pygame.init()
         # notify_sound_name = 'notify_sound.wav'
-        song = pygame.mixer.Sound("Mallet.ogg")
+        song = pygame.mixer.Sound("/home/evilkhaoskat/projects/python/PyAlarm/Mallet.ogg")
         song.play()
 
     @staticmethod
@@ -69,6 +69,12 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
 
         in_7_min_action = self.menu.addAction("In 00:07:00")
         in_7_min_action.triggered.connect(lambda: PyAlarm.init_timer(420))
+
+        in_10_min_action = self.menu.addAction("In 00:10:00")
+        in_10_min_action.triggered.connect(lambda: PyAlarm.init_timer(600))
+
+        in_15_min_action = self.menu.addAction("In 00:15:00")
+        in_15_min_action.triggered.connect(lambda: PyAlarm.init_timer(900))
 
         self.menu.addSeparator()
 
