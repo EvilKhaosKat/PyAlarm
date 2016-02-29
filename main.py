@@ -30,7 +30,7 @@ class PyAlarm:
 
     @staticmethod
     def _set_active_tray_icon():
-        PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("Icon_active.png"))
+        PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("./Icon_active.png"))
 
     @staticmethod
     def _timer_expired():
@@ -49,13 +49,13 @@ class PyAlarm:
         import pygame
         pygame.init()
         # notify_sound_name = 'notify_sound.wav'
-        song = pygame.mixer.Sound("Mallet.ogg")
+        song = pygame.mixer.Sound("./Mallet.ogg")
         song.play()
 
     @staticmethod
     def _reset_tray_icon():
         if PyAlarm.qt_system_tray_icon:
-            PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("Icon.png"))
+            PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("./Icon.png"))
 
     @staticmethod
     def exit():
@@ -110,7 +110,7 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
 def main():
     app = QtGui.QApplication(sys.argv)
     # style = app.style()
-    icon = QtGui.QIcon("Icon.png")
+    icon = QtGui.QIcon("./Icon.png")
     # QtGui.QIcon(style.standardPixmap(QtGui.QStyle.SP_ComputerIcon))
     # QtGui.QIcon.fromTheme("timer")
 
