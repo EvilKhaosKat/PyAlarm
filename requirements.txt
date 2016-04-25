@@ -1,2 +1,2 @@
-PyQt
+PyQt4
 pygame
