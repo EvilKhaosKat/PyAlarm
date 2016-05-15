@@ -30,7 +30,7 @@ class PyAlarm:
 
     @staticmethod
     def _set_active_tray_icon():
-        PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("./Icon_active.png"))
+        PyAlarm.qt_system_tray_icon.setIcon(QtGui.QIcon("/home/evilkhaoskat/projects/python/PyAlarm/Icon_active.png"))
 
     @staticmethod
     def _timer_expired():
@@ -89,6 +89,9 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
 
         in_5_min_action = self.menu.addAction("In 00:05:00")
         in_5_min_action.triggered.connect(lambda: PyAlarm.init_timer(300, self))
+
+        in_5_min_action = self.menu.addAction("In 00:06:00")
+        in_5_min_action.triggered.connect(lambda: PyAlarm.init_timer(360, self))
 
         in_7_min_action = self.menu.addAction("In 00:07:00")
         in_7_min_action.triggered.connect(lambda: PyAlarm.init_timer(420, self))
