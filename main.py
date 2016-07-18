@@ -102,6 +102,9 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
         in_15_min_action = self.menu.addAction("In 00:15:00")
         in_15_min_action.triggered.connect(lambda: PyAlarm.init_timer(900, self))
 
+        in_25_min_action = self.menu.addAction("In 00:25:00")
+        in_25_min_action.triggered.connect(lambda: PyAlarm.init_timer(1500, self))
+
         self.menu.addSeparator()
 
         exit_action = self.menu.addAction("Exit")
